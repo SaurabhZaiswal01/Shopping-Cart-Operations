@@ -20,7 +20,7 @@ let cart = [
 ];
 
 // Q1 Add an Item to the Cart
-function addItemToCart(item) {
+function addItemToCart(cart, item) {
   cart.push(item);
   return cart;
 }
@@ -36,12 +36,12 @@ app.get('/cart/add', (request, response) => {
     price: price,
     quantity: quantity,
   };
-  const result = addItemToCart(item);
+  const result = addItemToCart(cart, item);
   response.json({ cartItems: result });
 });
 
 // Q2 Edit Quantity of an Item in the Cart
-function updateCartQty(id, qty) {
+function updateCartQty(cart, id, qty) {
   cart.forEach((item) => {
     if (item.productId === id) {
       item.quantity = qty;
@@ -53,19 +53,19 @@ function updateCartQty(id, qty) {
 app.get('/cart/edit', (request, response) => {
   const productId = parseInt(request.query.productId);
   const quantity = parseInt(request.query.quantity);
-  const result = updateCartQty(productId, quantity);
+  const result = updateCartQty(cart, productId, quantity);
   response.json({ cartItems: result });
 });
 
 // Q3 Delete an Item from the Cart
-function deleteCartById(id) {
+function deleteCartById(cart, id) {
   return cart.filter((item) => item.productId != id);
 }
 
 app.get('/cart/delete', (request, response) => {
   const productId = parseInt(request.query.productId);
-  cart = deleteCartById(productId);
-  response.json({ cartItems: cart });
+  result = deleteCartById(cart, productId);
+  response.json({ cartItems: result });
 });
 
 // Q4 Read Items in the Cart
@@ -74,22 +74,22 @@ app.get('/cart', (request, response) => {
 });
 
 // Q5 Calculate Total Quantity of Items in the Cart
-function getTotalQty() {
+function getTotalQty(cart) {
   return cart.reduce((total, item) => total + item.quantity, 0);
 }
 
 app.get('/cart/total-quantity', (request, response) => {
-  const qty = getTotalQty();
+  const qty = getTotalQty(cart);
   response.json({ totalQuantity: qty });
 });
 
 // Q6 Calculate Total Price of Items in the Cart
-function getTotalPrice() {
+function getTotalPrice(cart) {
   return cart.reduce((total, item) => total + item.price * item.quantity, 0);
 }
 
 app.get('/cart/total-price', (request, response) => {
-  const totalPrice = getTotalPrice();
+  const totalPrice = getTotalPrice(cart);
   response.json({ totalPrice: totalPrice });
 });
 
