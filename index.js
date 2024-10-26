@@ -36,8 +36,8 @@ app.get('/cart/add', (request, response) => {
     price: price,
     quantity: quantity,
   };
-  const result = addItemToCart(cart, item);
-  response.json({ cartItems: result });
+  cart = addItemToCart(cart, item);
+  response.json({ cartItems: cart });
 });
 
 // Q2 Edit Quantity of an Item in the Cart
@@ -53,8 +53,8 @@ function updateCartQty(cart, id, qty) {
 app.get('/cart/edit', (request, response) => {
   const productId = parseInt(request.query.productId);
   const quantity = parseInt(request.query.quantity);
-  const result = updateCartQty(cart, productId, quantity);
-  response.json({ cartItems: result });
+  cart = updateCartQty(cart, productId, quantity);
+  response.json({ cartItems: cart });
 });
 
 // Q3 Delete an Item from the Cart
@@ -64,8 +64,8 @@ function deleteCartById(cart, id) {
 
 app.get('/cart/delete', (request, response) => {
   const productId = parseInt(request.query.productId);
-  result = deleteCartById(cart, productId);
-  response.json({ cartItems: result });
+  cart = deleteCartById(cart, productId);
+  response.json({ cartItems: cart });
 });
 
 // Q4 Read Items in the Cart
